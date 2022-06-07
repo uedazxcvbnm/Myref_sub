@@ -106,7 +106,8 @@ class _MyHomePage extends State<MyHomePage> {
   int _selectedIndex = 0;
   List<Memo> _memoList = [];
   int index = 0;
-  var _selectedvalue1;
+  //id番号
+  var _selectedvalue_id;
   //非同期関数定義
   Future<void> initializeDemo() async {
     _memoList = await Memo.getMemos();
@@ -116,9 +117,26 @@ class _MyHomePage extends State<MyHomePage> {
 
   final myController = TextEditingController();
   //カウントアップ定義
-  //void _incrementCounter(){
+  int apple_counter = 0;
+  int orange_counter = 0;
+  int strawberry_counter = 0;
+  void _incrementAppleCounter() {
+    setState(() {
+      apple_counter++;
+    });
+  }
 
-  //},
+  void _incrementOrangeCounter() {
+    setState(() {
+      orange_counter++;
+    });
+  }
+
+  void _incrementStrawberryCounter() {
+    setState(() {
+      strawberry_counter++;
+    });
+  }
 
   void _decrementCounter() {
     setState(() {
@@ -204,22 +222,75 @@ class _MyHomePage extends State<MyHomePage> {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, //カラム数
+                  crossAxisCount: 1, //カラム数
                 ),
-                itemCount: _memoList.length,
-                itemBuilder: (context, index1) {
+                //itemCount: _memoList.length,
+                itemCount: 1,
+                itemBuilder: (context, index_id) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        Text(
+                          '$apple_counter',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "りんご indexNum: $_selectedIndex",
+                            ),
+                            IconButton(
+                              onPressed: _incrementAppleCounter,
+                              icon: Icon(Icons.add),
+                              iconSize: 20,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '$orange_counter',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "みかん count: $orange_counter",
+                            ),
+                            IconButton(
+                              onPressed: _incrementOrangeCounter,
+                              icon: Icon(Icons.add),
+                              iconSize: 20,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '$strawberry_counter',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "いちご indexNum: $_selectedIndex",
+                            ),
+                            IconButton(
+                              onPressed: _incrementStrawberryCounter,
+                              icon: Icon(Icons.add),
+                              iconSize: 20,
+                            ),
+                          ],
+                        ),
+                        /*app_grid12
                         /*const Text(
                               'You have pushed the button this many times:',
                             ),*/
 
-                        //index1 データベースのindex
-                        //Text('ID ${_memoList[index1].id}'),
-                        Text('COUNT${_memoList[index1].count}'),
-                        Text('DATE${_memoList[index1].date}'),
+                        //index_id データベースのindex
+                        //Text('ID ${_memoList[index_id].id}'),
+                        Text('COUNT${_memoList[index_id].count}'),
+                        Text('DATE${_memoList[index_id].date}'),
                         //style: Theme.of(context).textTheme.headline4,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -228,12 +299,12 @@ class _MyHomePage extends State<MyHomePage> {
                               "indexNum: $_selectedIndex",
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: _incrementCounter,
                               icon: Icon(Icons.add),
                               iconSize: 20,
                             ),
                           ],
-                        ),
+                        ),*/
                       ],
                     ),
                   );
@@ -259,12 +330,15 @@ class _MyHomePage extends State<MyHomePage> {
                             child: Text('保存'),
                             onPressed: () async {
                               Memo _memo = Memo(
-                                  id: 1, count: 1, date: myController.text);
+                                  id: _selectedvalue_id,
+                                  food: 'りんご',
+                                  //count: _counter,
+                                  date: myController.text);
                               await Memo.insertMemo(_memo);
                               final List<Memo> memos = await Memo.getMemos();
                               setState(() {
                                 _memoList = memos;
-                                _selectedvalue1 = null;
+                                _selectedvalue_id = null;
                               });
                               myController.clear();
                               Navigator.pop(context);

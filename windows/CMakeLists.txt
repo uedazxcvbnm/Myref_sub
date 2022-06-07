@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(app_grid12 LANGUAGES CXX)
+project(app_grid13 LANGUAGES CXX)
 
-set(BINARY_NAME "app_grid12")
+set(BINARY_NAME "app_grid13")
 
 cmake_policy(SET CMP0063 NEW)
 

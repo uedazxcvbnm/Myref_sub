@@ -6,23 +6,31 @@ import 'dart:async';
 //データベース
 class Memo {
   final int id;
-  final int count;
+  final String food;
+  //final int count;
   final String date;
 
-  Memo({required this.id, required this.count, required this.date});
+  Memo(
+      {required this.id,
+      required this.food,
+      //required this.count,
+      required this.date});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id, //NOT NULL Primary Key
-      'count': count,
+      'food': food,
+      //'count': count,
       'date': date,
     };
   }
 
   @override
   String toString() {
-    return 'Memo{id: $id, count: $count, date: $date}';
+    return 'Memo{id: $id, food:$food, date: $date}';
   }
+
+  //count: $count,
 
   static Future<Database> get database async {
     // openDatabase() データベースに接続
@@ -32,14 +40,14 @@ class Memo {
       onCreate: (db, version) {
         return db.execute(
           // テーブルの作成
-          "CREATE TABLE memo (id INTEGER PRIMARY KEY AUTOINCREMENT,count INTEGER,date STRING)",
+          "CREATE TABLE memo (id INTEGER PRIMARY KEY AUTOINCREMENT,food FOOD,date DATE)",
         );
       },
       version: 1,
     );
     return _database;
   }
-  //
+  //count COUNT,
 
   static Future<void> insertMemo(Memo memo) async {
     final Database db = await database;
@@ -55,7 +63,10 @@ class Memo {
     final List<Map<String, dynamic>> maps = await db.query('memo');
     return List.generate(maps.length, (i) {
       return Memo(
-          id: maps[i]['id'], count: maps[i]['count'], date: maps[i]['date']);
+          id: maps[i]['id'],
+          food: maps[i]['food'],
+          //count: maps[i]['count'],
+          date: maps[i]['date']);
     });
   }
 
