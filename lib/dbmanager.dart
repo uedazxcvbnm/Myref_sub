@@ -4,9 +4,10 @@ import 'dart:async';
 import 'package:path/path.dart';
 
 class dbmanager {
-  late Database _database;
+  Database? _database;
+  int? count;
 
-  Future opendb_mr() async {
+  Future opendb_rf() async {
     if (_database == null) {
       _database = await openDatabase(join(await getDatabasesPath(), "myref.db"),
           version: 1, onCreate: (Database db, int version) async {
@@ -24,6 +25,13 @@ class dbmanager {
             "CREATE TABLE material(id INTEGER, name TEXT, kana TEXT, category TEXT, exday INTEGER");
       });
     }
+  }
+
+  Future empty_mr() async {
+    opendb_rf();
+    count = Sqflite.firstIntValue(
+        await _database.rawQuery('SELECT COUNT(*) FROM refri'));
+    return count;
   }
 }
 
